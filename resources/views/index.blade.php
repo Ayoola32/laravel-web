@@ -6,7 +6,7 @@
         <div class="card-header">
             <div class="row">
                 <div class="col-md-6">
-                    <h3><a href="{{route('posts.index')}}" style="text-decoration: none;">Blog Posts</a></h3>
+                    <h3>Blog Posts</h3>
                 </div>
                 <div class="col-md-6 d-flex justify-content-end">
                     <a href="{{route('posts.create')}}" class="btn btn-success mx-1">Create</a>
@@ -29,6 +29,24 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach ($posts as $post)
+                        <tr>
+                            <th scope="row">{{$post->id}}</th>
+                            <td>
+                                <img src="{{asset('storage/' . $post->image)}}" alt="" width="80">
+                            </td>
+                            <td>{{$post->title}}</td>
+                            <td>{{$post->description}}</td>
+                            <td>{{$post->category_id}}</td>
+                            {{-- <td>{{$post->created_at->format('d-m-Y')}}</td> --}}
+                            <td>{{date('d-M-Y', strtotime($post->created_at))}}</td>
+                            <td>
+                                <a href="" class="btn-sm btn-primary" style="text-decoration: none;">Show</a>
+                                <a href="{{route('posts.edit', $post->id)}}" class="btn-sm btn-warning" style="text-decoration: none;">Edit</a>
+                                <a href="" class="btn-sm btn-danger" style="text-decoration: none;">Delete</a>
+                            </td>
+                        </tr>
+                    @endforeach
                     <tr>
                         <th scope="row">1</th>
                         <td>
