@@ -2,6 +2,11 @@
 
 @section("content")
     <div class="main-content mt-5">
+        @if ($errors->any())
+            @foreach ($errors->all() as $error)
+                <div class="alert alert-danger">{{$error}}</div>
+            @endforeach
+        @endif
         <div class="card">
             <div class="card-header">
                 <div class="row">
@@ -16,8 +21,9 @@
 
             <div class="card-body">
                 {{-- This is a form page --}}
-                <form action="">
+                <form action="{{route('posts.update', $post->id)}}" method="POST" enctype="multipart/form-data">
                     @csrf
+                    @method('PUT')
                     <div>
                         <img src="{{asset('storage/' . $post->image)}}" alt="" width="200px">
                     </div>
@@ -31,7 +37,7 @@
                     </div>
                     <div class="form-group mt-2">
                         <label for="title">Category</label>
-                        <select name="" id="" class="form-control">
+                        <select name="category_id" id="" class="form-control">
                             <option value="">Select Category</option>
                             @foreach ($categories as $category)
                                 <option {{$category->id == $post->category_id ? 'selected' : ''}} value="{{$category->id}}">{{$category->name}}</option>
