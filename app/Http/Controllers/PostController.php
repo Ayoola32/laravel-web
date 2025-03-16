@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+// Facades
+use Illuminate\Support\Facades\File;
 use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -61,7 +63,9 @@ class PostController extends Controller
     public function show(string $id)
     {
         //
-        return "Here to show";
+        $post = Post::findOrFail($id);
+        return view('show', compact('post',));
+
     }
 
     /**
@@ -81,6 +85,38 @@ class PostController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $request->validate([
+            'title' => ['required', 'max:255'],
+            'category_id' => ['required', 'integer'],
+            'description' => ['required']
+        ]);
+
+        $post = Post::findOrFail($id);
+
+
+        if ($request->hasFile('image')) {
+            $request->validate([
+                'image' => ['required', 'max:2028', 'image'],
+            ]);
+
+            $filename = time() . '_' . $request->image->getClientOriginalName();
+            $filepath = $request->image->storeAs('public/uploads', $filename);
+            $filepath = str_replace('public/', '', $filepath);
+
+            // Delete the old image
+            File::delete('storage/' . $post->image);
+
+
+            $post->image = $filepath;
+
+        }
+
+        $post->title = $request->title;
+        $post->category_id = $request->category_id;
+        $post->description = $request->description;
+        $post->save();
+
+        return redirect()->route('posts.index');
     }
 
     /**
@@ -98,5 +134,8 @@ class PostController extends Controller
     public function destroy(string $id)
     {
         //
+        $destroy = Post::findOrFail($id);
+        $destroy->delete(); // Soft delete  
+        return redirect()->route('posts.index');
     }
 }
