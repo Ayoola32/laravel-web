@@ -122,10 +122,11 @@ class PostController extends Controller
     /**
      * View all Trashed posts
      */
-    public function Trashed()
+    public function trashed()
     {
         //
-        return view('Trashed');
+        $posts = Post::onlyTrashed()->get();
+        return view('trashed', compact('posts'));
     }
 
     /**
@@ -137,5 +138,28 @@ class PostController extends Controller
         $destroy = Post::findOrFail($id);
         $destroy->delete(); // Soft delete  
         return redirect()->route('posts.index');
+    }
+
+    /**
+     * Restore the specified resource from storage.
+     */
+    public function restore(string $id)
+    {
+        // 
+        $post = Post::onlyTrashed()->findOrFail($id);
+        $post->restore();
+        return redirect()->back();
+    }
+
+    /**
+     * Force delete the specified resource from storage.
+     */     
+    public function forceDelete(string $id)
+    {
+        //
+        $post = Post::onlyTrashed()->findOrFail($id);
+        File::delete('storage/' . $post->image);
+        $post->forceDelete(); 
+        return redirect()->back();
     }
 }
