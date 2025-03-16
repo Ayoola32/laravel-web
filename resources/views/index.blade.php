@@ -10,7 +10,7 @@
                 </div>
                 <div class="col-md-6 d-flex justify-content-end">
                     <a href="{{route('posts.create')}}" class="btn btn-success mx-1">Create</a>
-                    <a href="" class="btn btn-dark mx-1">Trash</a>
+                    <a href="{{route('posts.trashed')}}" class="btn btn-dark mx-1">Trash</a>
                 </div>
             </div>
         </div>
@@ -37,13 +37,11 @@
                             </td>
                             <td>{{$post->title}}</td>
                             <td>{{$post->description}}</td>
-                            <td>{{$post->category_id}}</td>
-                            {{-- <td>{{$post->created_at->format('d-m-Y')}}</td> --}}
+                            <td>{{$post->category->name}}</td>
                             <td>{{date('d-M-Y', strtotime($post->created_at))}}</td>
                             <td>
                                 <a href="{{route('posts.show', $post->id)}}" class="btn-sm btn-primary" style="text-decoration: none;">Show</a>
                                 <a href="{{route('posts.edit', $post->id)}}" class="btn-sm btn-warning" style="text-decoration: none;">Edit</a>
-                                {{-- <a href="" class="btn-sm btn-danger" style="text-decoration: none;">Delete</a> --}}
 
                                 <form action="{{route('posts.destroy', $post->id)}}" method="POST" style="display: inline;">
                                     @csrf
@@ -53,21 +51,6 @@
                             </td>
                         </tr>
                     @endforeach
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>
-                            <img src="https://picsum.photos/200" alt="" width="80">
-                        </td>
-                        <td>Post Title</td>
-                        <td>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aut autem quod mollitia incidunt eius dolorem quos modi quas itaque ex!</td>
-                        <td>Crud</td>
-                        <td>28-02-2025</td>
-                        <td>
-                            <a href="" class="btn-sm btn-primary" style="text-decoration: none;">Show</a>
-                            <a href="" class="btn-sm btn-warning" style="text-decoration: none;">Edit</a>
-                            <a href="" class="btn-sm btn-danger" style="text-decoration: none;">Delete</a>
-                        </td>
-                    </tr>
                 </tbody>
             </table>
         </div>
