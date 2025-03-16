@@ -41,9 +41,15 @@
                             {{-- <td>{{$post->created_at->format('d-m-Y')}}</td> --}}
                             <td>{{date('d-M-Y', strtotime($post->created_at))}}</td>
                             <td>
-                                <a href="" class="btn-sm btn-primary" style="text-decoration: none;">Show</a>
+                                <a href="{{route('posts.show', $post->id)}}" class="btn-sm btn-primary" style="text-decoration: none;">Show</a>
                                 <a href="{{route('posts.edit', $post->id)}}" class="btn-sm btn-warning" style="text-decoration: none;">Edit</a>
-                                <a href="" class="btn-sm btn-danger" style="text-decoration: none;">Delete</a>
+                                {{-- <a href="" class="btn-sm btn-danger" style="text-decoration: none;">Delete</a> --}}
+
+                                <form action="{{route('posts.destroy', $post->id)}}" method="POST" style="display: inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn-sm btn-danger mt-1" style="text-decoration: none;">Delete</button>
+                                </form>
                             </td>
                         </tr>
                     @endforeach
